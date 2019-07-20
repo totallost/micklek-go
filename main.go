@@ -19,6 +19,7 @@ func main() {
 	DB, err = sql.Open("sqlite3", "./Micklek.db")
 	controllers.DB = DB
 	defer DB.Close()
+
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/items/all", controllers.GetAllItems).Methods("GET")
 	router.HandleFunc("/api/items", controllers.GetActiveItems).Methods("GET")
@@ -33,6 +34,9 @@ func main() {
 	router.HandleFunc("/api/management/get-order-lines/{id}", controllers.GetOrderLines).Methods("GET")
 	router.HandleFunc("/api/details/sendOrder", controllers.CreateNewOrder).Methods("PUT")
 	router.HandleFunc("/api/management/update-order", controllers.UpdateOrder).Methods("POST")
+
+	router.HandleFunc("/api/auth/login", controllers.Login).Methods("POST")
+	router.HandleFunc("/api/auth/getuser", controllers.GetUser).Methods("GET")
 
 	http.ListenAndServe(":8080", router)
 }
